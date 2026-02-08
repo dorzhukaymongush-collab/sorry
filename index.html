@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ПРОСТИ — Слова в огне</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
+    
+    <!-- Мета-теги для соцсетей -->
+    <meta property="og:title" content="ПРОСТИ — Слова, которые сгорят через 3 дня">
+    <meta property="og:description" content="Анонимные письма, которые горят 3 дня. Напиши то, что не сказал.">
+    <meta property="og:image" content="https://img.icons8.com/color/480/000000/fire.png">
+    <meta property="og:url" content="https://ваш-сайт">
+    <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+    <!-- Анимированный фон огня -->
+    <div class="fire-bg" id="fireBackground"></div>
+    
+    <div class="container">
+        <!-- Интерфейс -->
+        <div class="ui">
+            <h1 class="pixel-text glow">🔥 ПРОСТИ</h1>
+            <p class="subtitle pixel-text">Слова сгорят через 3 дня. Как и должно быть.</p>
+            
+            <!-- Контейнер для писем -->
+            <div class="letters-container" id="lettersContainer">
+                <div class="loading pixel-text">
+                    <i class="fas fa-fire"></i> Загружаем письма...
+                </div>
+            </div>
+            
+            <!-- Кнопка добавления -->
+            <button class="add-btn pixel-btn glow-btn" id="addBtn">
+                <i class="fas fa-fire"></i> Бросить письмо в огонь
+            </button>
+            
+            <!-- Статистика -->
+            <div class="stats pixel-text">
+                <span><i class="fas fa-fire"></i> Горит сейчас: <span id="todayCount">0</span></span>
+                <span><i class="fas fa-scroll"></i> Всего писем: <span id="totalCount">0</span></span>
+                <span><i class="fas fa-users"></i> Онлайн: <span id="onlineCount">1</span></span>
+            </div>
+            
+            <!-- Информация -->
+            <div class="info pixel-text">
+                <p><i class="fas fa-info-circle"></i> Все письма анонимны. Через 72 часа они сгорят навсегда.</p>
+                <p><i class="fas fa-eye"></i> Здесь ты видишь письма от всех пользователей</p>
+            </div>
+        </div>
+        
+        <!-- Модальное окно создания письма -->
+        <div class="modal" id="letterModal">
+            <div class="modal-content fire-border">
+                <h2 class="pixel-text"><i class="fas fa-feather-alt"></i> Новое письмо</h2>
+                
+                <div class="writing-area">
+                    <div class="paper-texture">
+                        <textarea 
+                            id="letterText" 
+                            placeholder="Напиши здесь то, что хочешь отпустить...
+То, что не сказал вовремя...
+То, о чём жалеешь...
+То, за что прощаешь...
+                            
+Максимум 500 символов.
+Через 3 дня это сгорит навсегда." 
+                            maxlength="500"
+                            spellcheck="false"
+                        ></textarea>
+                        
+                        <div class="paper-lines"></div>
+                    </div>
+                    
+                    <div class="char-count pixel-text">
+                        <i class="fas fa-text-height"></i> Осталось символов: <span id="charCount">500</span>
+                    </div>
+                </div>
+                
+                <div class="modal-buttons">
+                    <button class="pixel-btn fire-btn secondary" id="cancelBtn">
+                        <i class="fas fa-times"></i> Отмена
+                    </button>
+                    <button class="pixel-btn fire-btn primary" id="sendBtn">
+                        <i class="fas fa-fire"></i> Бросить в огонь
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Модальное окно чтения письма -->
+        <div class="modal" id="readModal">
+            <div class="modal-content fire-border letter-paper">
+                <div class="letter-header">
+                    <div class="letter-meta">
+                        <span class="letter-time pixel-text" id="letterTime">
+                            <i class="fas fa-clock"></i> <span>2 дня осталось</span>
+                        </span>
+                        <span class="letter-views pixel-text">
+                            <i class="fas fa-eye"></i> <span id="letterViews">0</span>
+                        </span>
+                    </div>
+                    <button class="close-btn pixel-btn small" id="closeReadBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="letter-body-container">
+                    <div class="letter-body" id="letterBody">
+                        <!-- Текст письма будет здесь -->
+                    </div>
+                    <div class="letter-burn-effect"></div>
+                </div>
+                
+                <div class="letter-reactions">
+                    <h3 class="pixel-text"><i class="fas fa-heart"></i> Реакции:</h3>
+                    <div class="reactions-grid">
+                        <button class="pixel-btn reaction fire-btn" data-emoji="🔥" data-type="fire">
+                            <span class="emoji">🔥</span>
+                            <span class="count" id="fireCount">0</span>
+                            <span class="label">Горит</span>
+                        </button>
+                        <button class="pixel-btn reaction fire-btn" data-emoji="💔" data-type="heartbreak">
+                            <span class="emoji">💔</span>
+                            <span class="count" id="heartbreakCount">0</span>
+                            <span class="label">Больно</span>
+                        </button>
+                        <button class="pixel-btn reaction fire-btn" data-emoji="🤝" data-type="understand">
+                            <span class="emoji">🤝</span>
+                            <span class="count" id="understandCount">0</span>
+                            <span class="label">Понимаю</span>
+                        </button>
+                        <button class="pixel-btn reaction fire-btn" data-emoji="✨" data-type="sparkle">
+                            <span class="emoji">✨</span>
+                            <span class="count" id="sparkleCount">0</span>
+                            <span class="label">Сияет</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <h3 class="pixel-text"><i class="fas fa-comments"></i> Искры от других:</h3>
+                    <div class="comments-list" id="commentsList">
+                        <!-- Комментарии будут здесь -->
+                    </div>
+                    
+                    <div class="comment-form" id="commentForm">
+                        <div class="input-group">
+                            <input 
+                                type="text" 
+                                id="commentInput" 
+                                placeholder="Напиши искру поддержки... (макс. 120 символов)" 
+                                maxlength="120"
+                            >
+                            <button class="pixel-btn fire-btn small" id="addComment">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <p class="comment-note pixel-text">
+                            <i class="fas fa-info-circle"></i> Комментарии можно оставлять только в первый день
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Уведомление -->
+        <div id="notification" class="notification pixel-text"></div>
+    </div>
+
+    <!-- Звуки -->
+    <audio id="fireSound" loop>
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-campfire-crackles-1331.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="paperSound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-paper-slip-1013.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="whooshSound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-whoosh-flame-1175.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Скрипты -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="google-sheets.js"></script>
+    <script src="script.js"></script>
+    
+    <!-- Инициализация -->
+    <script>
+        // Включить звуки при первом клике
+        document.addEventListener('click', function initAudio() {
+            const sounds = ['fireSound', 'paperSound', 'whooshSound'];
+            sounds.forEach(id => {
+                const audio = document.getElementById(id);
+                if (audio) {
+                    audio.volume = 0.3;
+                    audio.play().then(() => audio.pause());
+                }
+            });
+            document.removeEventListener('click', initAudio);
+        });
+    </script>
+</body>
+</html>
